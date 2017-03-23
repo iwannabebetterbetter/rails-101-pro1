@@ -55,10 +55,10 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
 
     if !current_user.is_member_of?(@movie)
-      current_user.join!(@group)
-      flash[:notice] = "收藏成功！"
+      current_user.join!(@movie)
+      flash[:notice] = "成功加入！"
     else
-      flash[:warning] = "你已经是本讨论版成员了！"
+      flash[:warning] = "已是成员！"
     end
 
     redirect_to movie_path(@movie)
@@ -69,9 +69,9 @@ class MoviesController < ApplicationController
 
      if current_user.is_member_of?(@movie)
        current_user.quit!(@movie)
-       flash[:alert] = "取消收藏！"
+       flash[:alert] = "登出！"
      else
-       flash[:warning] = "你不是本讨论版成员，怎么退出 XD"
+       flash[:warning] = "未登录，怎么退出 XD"
      end
 
      redirect_to movie_path(@movie)
