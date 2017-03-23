@@ -25,6 +25,7 @@ class MoviesController < ApplicationController
     @movie.user = current_user
 
     if @movie.save
+      current_user.join!(@movie)
 
       redirect_to movies_path
     else
@@ -48,6 +49,32 @@ class MoviesController < ApplicationController
      @movie.destroy
      flash[:alert] = "Movie deleted"
      redirect_to movies_path
+   end
+
+   def join
+    @movie = Movie.find(params[:id])
+
+    if !current_user.is_member_of?(@movie)
+      current_user.join!(@group)
+      flash[:notice] = "收藏成功！"
+    else
+      flash[:warning] = "你已经是本讨论版成员了！"
+    end
+
+    redirect_to movie_path(@movie)
+   end
+
+   def quit
+     @movie = Movie.find(params[:id])
+
+     if current_user.is_member_of?(@movie)
+       current_user.quit!(@movie)
+       flash[:alert] = "取消收藏！"
+     else
+       flash[:warning] = "你不是本讨论版成员，怎么退出 XD"
+     end
+
+     redirect_to movie_path(@movie)
    end
 
 
