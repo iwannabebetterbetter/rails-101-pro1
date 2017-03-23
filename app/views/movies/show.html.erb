@@ -1,8 +1,16 @@
 <div class="col-md-12">
   <div class="movie">
+
+    <span class="pull-right">
+     <% if current_user && current_user.is_member_of?(@movie) %>
+      <label class="label label-success"> 群组成员 </label>
+     <% else %>
+      <label class="label label-warning"> 不是群组成员 </label>
+     <% end %>
+   </span>
     <%= link_to("写评论", new_movie_post_path(@movie), class: "btn btn-default pull-right")%>
     <% if current_user && current_user == @movie.user %>
-      <%= link_to("Edit", edit_movie_path(@movie), class: "btn btn-primary pull-right")%>
+      <!--<%= link_to("Edit", edit_movie_path(@movie), class: "btn btn-primary pull-right")%>-->
     <% end %>
   </div>
   <h2><%= @movie.title %></h2>
